@@ -1,0 +1,34 @@
+package com.akshatr.jobportal.controller;
+
+import com.akshatr.jobportal.model.dto.company.CompanyResponseDto;
+import com.akshatr.jobportal.model.entity.Company;
+import com.akshatr.jobportal.service.CompanyService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/companies")
+@RequiredArgsConstructor
+public class CompanyController {
+    private final CompanyService companyService;
+
+    @GetMapping
+    public List<CompanyResponseDto> getCompanies(){
+        return companyService.getCompanies().stream()
+                .map(this::generateCompanyResponse)
+                .toList();
+    }
+
+    private CompanyResponseDto generateCompanyResponse(Company company){
+        return CompanyResponseDto.builder()
+                .id(company.getId())
+                .name(company.getName())
+                .createdOn(company.getCreatedOn())
+                .lastUpdatedOn(company.getLastUpdatedOn())
+                .build();
+    }
+}
