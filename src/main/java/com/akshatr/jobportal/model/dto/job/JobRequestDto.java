@@ -1,18 +1,14 @@
 package com.akshatr.jobportal.model.dto.job;
 
 import com.akshatr.jobportal.model.enums.JobStatus;
-import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 
 @Data
-@Builder
-public class JobResponseDto {
+public class JobRequestDto {
     private Long id;
     private String name;
-    private Date createdOn;
-    private Date lastUpdatedOn;
     private String identifier;
     private Long salaryMin;
     private Long salaryMax;
@@ -21,5 +17,5 @@ public class JobResponseDto {
     private Date postedOn;
     private Date expiredOn;
     private JobStatus status;
-    private String company;
+    private Long companyId;
 }
