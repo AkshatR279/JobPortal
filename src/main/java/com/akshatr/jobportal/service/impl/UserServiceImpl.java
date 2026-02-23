@@ -3,9 +3,12 @@ package com.akshatr.jobportal.service.impl;
 import com.akshatr.jobportal.model.dto.user.LoginRequestDto;
 import com.akshatr.jobportal.model.dto.user.UserRequestDto;
 import com.akshatr.jobportal.model.entity.User;
+import com.akshatr.jobportal.model.utilmodel.JWTClaims;
 import com.akshatr.jobportal.repository.UserRepository;
 import com.akshatr.jobportal.service.UserService;
+import com.akshatr.jobportal.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,6 +18,8 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
+    private final BCryptPasswordEncoder passwordEncoder;
+    private final JWTUtil jwtUtil;
 
     @Override
     public List<User> getUsers() {
@@ -30,7 +35,7 @@ public class UserServiceImpl implements UserService {
         }
 
         user.setName(request.getName());
-        user.setPassword(request.getPassword());
+        user.setPassword(passwordEncoder.encode(request.getPassword()));
         user.setRole(request.getRole());
         user.setStatus(request.getStatus());
 
@@ -39,12 +44,30 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User login(LoginRequestDto request) {
-        Optional<User> loginUser = userRepository.findByUsernamePassword(request.getUsername(), request.getPassword());
+        Optional<User> loginUser = userRepository.findByUsername(request.getUsername());
         if(loginUser.isEmpty()){
-            throw new RuntimeException("Invalid username or password.");
+            throw new RuntimeException("No user found with the provided username.");
         }
 
         User user = loginUser.get();
-        return user;
+        if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
+            throw new RuntimeException("Invalid password.");
+        }
+
+        user.setToken(jwtUtil.generateToken(user));
+        return userRepository.save(user);
+    }
+
+    public void verifyToken(String token){
+        JWTClaims claims = jwtUtil.decodeToken(token);
+
+        Optional<User> user = userRepository.findById(claims.getId());
+        if(user.isEmpty()){
+            throw new RuntimeException("Invalid login session.");
+        }
+
+        if(!user.get().getToken().equals(token)){
+            throw new RuntimeException("Login session expired.");
+        }
     }
 }
