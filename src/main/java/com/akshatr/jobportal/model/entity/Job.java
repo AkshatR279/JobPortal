@@ -3,11 +3,13 @@ package com.akshatr.jobportal.model.entity;
 import com.akshatr.jobportal.model.enums.JobStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.util.Date;
+import java.util.List;
 
 @Entity
 @Table(name = "tbl_Jobs")
@@ -21,9 +23,14 @@ public class Job extends BaseEntity {
     private int experienceMax;
     private Date postedOn;
     private Date expiredOn;
+    private JobStatus status;
 
     @ManyToOne
     private Company company;
 
-    private JobStatus status;
+    @ManyToOne
+    private User user;
+
+    @OneToMany(mappedBy = "job")
+    private List<JobApplication> jobApplications;
 }
