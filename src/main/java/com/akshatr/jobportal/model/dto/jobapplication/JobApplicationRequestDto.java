@@ -1,7 +1,5 @@
 package com.akshatr.jobportal.model.dto.jobapplication;
 
-import com.akshatr.jobportal.model.entity.Job;
-import com.akshatr.jobportal.model.entity.User;
 import com.akshatr.jobportal.model.enums.JobApplicationStatus;
 import lombok.Data;
 

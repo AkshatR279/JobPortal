@@ -3,6 +3,7 @@ package com.akshatr.jobportal.model.entity;
 import com.akshatr.jobportal.model.enums.JobApplicationStatus;
 import jakarta.persistence.Entity;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,6 +20,9 @@ public class JobApplication extends BaseEntity{
 
     @ManyToOne
     private User user;
+
+    @OneToOne
+    private Referral referral;
 
     private JobApplicationStatus status;
     private Date submittedOn;

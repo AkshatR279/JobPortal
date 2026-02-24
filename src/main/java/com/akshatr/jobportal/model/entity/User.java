@@ -25,5 +25,8 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Job> jobsPosted;
 
+    @OneToMany(mappedBy = "user")
+    private List<Referral> referrals;
+
     private String token;
 }
