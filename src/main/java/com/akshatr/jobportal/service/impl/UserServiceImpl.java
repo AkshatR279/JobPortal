@@ -3,7 +3,6 @@ package com.akshatr.jobportal.service.impl;
 import com.akshatr.jobportal.model.dto.user.LoginRequestDto;
 import com.akshatr.jobportal.model.dto.user.UserRequestDto;
 import com.akshatr.jobportal.model.entity.User;
-import com.akshatr.jobportal.model.utilmodel.JWTClaims;
 import com.akshatr.jobportal.repository.UserRepository;
 import com.akshatr.jobportal.service.UserService;
 import com.akshatr.jobportal.util.JWTUtil;
@@ -20,6 +19,11 @@ public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final BCryptPasswordEncoder passwordEncoder;
     private final JWTUtil jwtUtil;
+
+    @Override
+    public Optional<User> findById(Long id) {
+        return userRepository.findById(id);
+    }
 
     @Override
     public List<User> getUsers() {
@@ -56,18 +60,5 @@ public class UserServiceImpl implements UserService {
 
         user.setToken(jwtUtil.generateToken(user));
         return userRepository.save(user);
-    }
-
-    public void verifyToken(String token){
-        JWTClaims claims = jwtUtil.decodeToken(token);
-
-        Optional<User> user = userRepository.findById(claims.getId());
-        if(user.isEmpty()){
-            throw new RuntimeException("Invalid login session.");
-        }
-
-        if(!user.get().getToken().equals(token)){
-            throw new RuntimeException("Login session expired.");
-        }
     }
 }

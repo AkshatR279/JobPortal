@@ -44,10 +44,13 @@ public class JWTUtil {
                 .parseSignedClaims(token)
                 .getPayload();
 
+        Long id = claims.get("Id", Long.class);
+        String roleName = claims.get("Role", String.class);
+        UserRole role = UserRole.valueOf(roleName);
 
         return JWTClaims.builder()
-                .id((Long) claims.get("Id"))
-                .role((UserRole) claims.get("Role"))
+                .id(id)
+                .role(role)
                 .issuedAt(claims.getIssuedAt())
                 .expiration(claims.getExpiration())
                 .build();
