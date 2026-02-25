@@ -1,6 +1,8 @@
 package com.akshatr.jobportal.model.dto.jobapplication;
 
 import com.akshatr.jobportal.model.dto.job.JobResponseShortDto;
+import com.akshatr.jobportal.model.dto.referral.ReferralResponseDto;
+import com.akshatr.jobportal.model.dto.referral.ReferralResponseShortDto;
 import com.akshatr.jobportal.model.dto.user.UserResponseShortDto;
 import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.model.entity.User;
@@ -18,6 +20,7 @@ public class JobApplicationResponseDto {
     private JobResponseShortDto job;
     private UserResponseShortDto user;
     private JobApplicationStatus status;
+    private ReferralResponseShortDto referral;
     private Date submittedOn;
     private Date createdOn;
     private Date lastUpdatedOn;

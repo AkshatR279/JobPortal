@@ -21,7 +21,7 @@ public class JobApplication extends BaseEntity{
     @ManyToOne
     private User user;
 
-    @OneToOne
+    @OneToOne(mappedBy = "referralFor")
     private Referral referral;
 
     private JobApplicationStatus status;
