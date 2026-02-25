@@ -18,6 +18,7 @@ public class User extends BaseEntity {
     private String password;
     private UserRole role;
     private UserStatus status;
+    private String token;
 
     @OneToMany(mappedBy = "user")
     private List<JobApplication> jobApplications;
@@ -28,5 +29,9 @@ public class User extends BaseEntity {
     @OneToMany(mappedBy = "user")
     private List<Referral> referrals;
 
-    private String token;
+    @OneToMany(mappedBy = "user")
+    private List<Order> orders;
+
+    @OneToMany(mappedBy = "user")
+    private List<Payment> payments;
 }

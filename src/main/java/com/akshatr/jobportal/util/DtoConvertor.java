@@ -2,12 +2,10 @@ package com.akshatr.jobportal.util;
 
 import com.akshatr.jobportal.model.dto.job.JobResponseShortDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationResponseShortDto;
+import com.akshatr.jobportal.model.dto.order.OrderResponseShortDto;
 import com.akshatr.jobportal.model.dto.referral.ReferralResponseShortDto;
 import com.akshatr.jobportal.model.dto.user.UserResponseShortDto;
-import com.akshatr.jobportal.model.entity.Job;
-import com.akshatr.jobportal.model.entity.JobApplication;
-import com.akshatr.jobportal.model.entity.Referral;
-import com.akshatr.jobportal.model.entity.User;
+import com.akshatr.jobportal.model.entity.*;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -39,6 +37,13 @@ public class DtoConvertor {
                 .id(referral.getId())
                 .message(referral.getMessage())
                 .user(convertToUserShort(referral.getUser()))
+                .build();
+    }
+
+    public OrderResponseShortDto convertOrderToResponseShort(Order order){
+        return OrderResponseShortDto.builder()
+                .id(order.getId())
+                .name(order.getName())
                 .build();
     }
 }
