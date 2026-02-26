@@ -27,9 +27,9 @@ public class PaymentController {
                 .toList();
     }
 
-    @PostMapping("/save")
-    public PaymentResponseDto save(PaymentRequestDto request){
-        return convertPaymentToResponseDto(paymentService.save(request));
+    @PostMapping("/create")
+    public String create(PaymentRequestDto request){
+        return paymentService.create(request);
     }
 
     private PaymentResponseDto convertPaymentToResponseDto(Payment payment){

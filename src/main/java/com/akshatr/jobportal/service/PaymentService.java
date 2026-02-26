@@ -8,5 +8,5 @@ import java.util.List;
 
 public interface PaymentService {
     public List<Payment> listPayments(PaymentSearchDto request);
-    public Payment save(PaymentRequestDto request);
+    public String create(PaymentRequestDto request);
 }

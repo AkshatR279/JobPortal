@@ -40,7 +40,7 @@ public class OrderServiceImpl implements OrderService {
             order = existingOrder.get();;
         }
 
-        order.setName(request.getName());
+        order.setName("INV" + request.getOrderType().toString().substring(0,2) + System.currentTimeMillis());
         order.setOrderType(request.getOrderType());
         order.setOrderDate(request.getOrderDate());
         order.setCost(request.getCost());
