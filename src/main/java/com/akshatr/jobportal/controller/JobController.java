@@ -22,6 +22,11 @@ public class JobController {
                 .toList();
     }
 
+    @GetMapping("/{id}")
+    public JobResponseDto getJob(@RequestParam(name = "id") Long id){
+        return convertJobToDto(jobService.getJob(id));
+    }
+
     @PostMapping("/save")
     public JobResponseDto saveJob(@RequestBody JobRequestDto request){
         return convertJobToDto(jobService.saveJob(request));

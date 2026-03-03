@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface JobService {
     public List<Job> getJobs();
+    public Job getJob(Long id);
     public Job saveJob(JobRequestDto request);
 }
