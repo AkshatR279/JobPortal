@@ -6,6 +6,7 @@ import com.akshatr.jobportal.model.entity.Company;
 import java.util.List;
 
 public interface CompanyService {
+    public Company getCompany(Long id);
     public List<Company> getCompanies();
     public Company saveCompany(CompanyRequestDto request);
 }

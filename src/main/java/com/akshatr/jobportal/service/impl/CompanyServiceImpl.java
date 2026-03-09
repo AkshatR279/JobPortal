@@ -2,7 +2,6 @@ package com.akshatr.jobportal.service.impl;
 
 import com.akshatr.jobportal.model.dto.company.CompanyRequestDto;
 import com.akshatr.jobportal.model.entity.Company;
-import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.repository.CompanyRepository;
 import com.akshatr.jobportal.service.CompanyService;
 import lombok.RequiredArgsConstructor;
@@ -15,6 +14,16 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+
+    @Override
+    public Company getCompany(Long id) {
+        Optional<Company> company = companyRepository.findById(id);
+        if(company.isEmpty()){
+            throw new RuntimeException("Company not found.");
+        }
+
+        return company.get();
+    }
 
     @Override
     public List<Company> getCompanies() {

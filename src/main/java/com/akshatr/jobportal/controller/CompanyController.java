@@ -5,6 +5,8 @@ import com.akshatr.jobportal.model.dto.company.CompanyResponseDto;
 import com.akshatr.jobportal.model.entity.Company;
 import com.akshatr.jobportal.service.CompanyService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CachePut;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,7 +17,14 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
 
+    @GetMapping("/{id}")
+    @Cacheable(value = "COMPANY", key = "#id")
+    public CompanyResponseDto getCompany(@PathVariable Long id){
+        return generateCompanyResponse(companyService.getCompany(id));
+    }
+
     @GetMapping
+    @Cacheable(value = "COMPANIES", key = "'All'")
     public List<CompanyResponseDto> getCompanies(){
         return companyService.getCompanies().stream()
                 .map(this::generateCompanyResponse)
@@ -23,6 +32,7 @@ public class CompanyController {
     }
 
     @PostMapping("/save")
+    @CachePut(value = "COMPANY", key = "#result.id")
     public CompanyResponseDto saveCompany(@RequestBody CompanyRequestDto request){
         return generateCompanyResponse(companyService.saveCompany(request));
     }

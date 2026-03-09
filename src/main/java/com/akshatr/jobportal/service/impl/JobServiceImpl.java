@@ -7,8 +7,6 @@ import com.akshatr.jobportal.repository.CompanyRepository;
 import com.akshatr.jobportal.repository.JobRepository;
 import com.akshatr.jobportal.service.JobService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.Cache;
-import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,7 +17,6 @@ import java.util.Optional;
 public class JobServiceImpl implements JobService {
     private final CompanyRepository companyRepository;
     private final JobRepository jobRepository;
-    private final CacheManager cacheManager;
 
     @Override
     public List<Job> getJobs() {
@@ -28,11 +25,6 @@ public class JobServiceImpl implements JobService {
 
     @Override
     public Job getJob(Long id) {
-        Cache cache  = cacheManager.getCache("JOB_PORTAL_JOBS");
-        if(cache != null && cache.get(id) != null){
-            return (Job) cache.get(id);
-        }
-
         Optional<Job> job = jobRepository.findById(id);
         if(job.isEmpty()){
             throw new RuntimeException("Job not found.");
@@ -66,11 +58,6 @@ public class JobServiceImpl implements JobService {
         job.setStatus(request.getStatus());
 
         jobRepository.save(job);
-
-        Cache cache = cacheManager.getCache("JOB_PORTAL_JOBS");
-        if(cache != null)
-            cache.put(job.getId(), job);
-
         return job;
     }
 
