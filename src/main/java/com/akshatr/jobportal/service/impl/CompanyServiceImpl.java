@@ -17,6 +17,7 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public Company getCompany(Long id) {
+        System.out.println("Service called.");
         Optional<Company> company = companyRepository.findById(id);
         if(company.isEmpty()){
             throw new RuntimeException("Company not found.");
@@ -27,11 +28,13 @@ public class CompanyServiceImpl implements CompanyService {
 
     @Override
     public List<Company> getCompanies() {
+        System.out.println("Service called.");
         return companyRepository.findAll();
     }
 
     @Override
     public Company saveCompany(CompanyRequestDto request) {
+        System.out.println("Service called.");
         Company company = new Company();
 
         Optional<Company> existingCompany = companyRepository.findById(request.getId());

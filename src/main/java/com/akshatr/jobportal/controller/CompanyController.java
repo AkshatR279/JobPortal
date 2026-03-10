@@ -45,10 +45,7 @@ public class CompanyController {
 
     @PostMapping("/save")
     public CompanyResponseDto saveCompany(@RequestBody CompanyRequestDto request){
-        CompanyResponseDto company = generateCompanyResponse(companyService.saveCompany(request));
-        cacheService.add(CACHE_NAME, company.getId().toString(), company);
-
-        return company;
+        return generateCompanyResponse(companyService.saveCompany(request));
     }
 
     private CompanyResponseDto generateCompanyResponse(Company company){

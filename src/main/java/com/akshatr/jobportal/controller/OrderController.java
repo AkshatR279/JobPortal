@@ -5,6 +5,7 @@ import com.akshatr.jobportal.model.dto.order.OrderResponseDto;
 import com.akshatr.jobportal.model.dto.order.OrderSearchDto;
 import com.akshatr.jobportal.model.entity.Order;
 import com.akshatr.jobportal.service.OrderService;
+import com.akshatr.jobportal.service.cache.CacheService;
 import com.akshatr.jobportal.util.DtoConvertor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
@@ -17,12 +18,21 @@ import java.util.List;
 public class OrderController {
     private final OrderService orderService;
     private final DtoConvertor dtoConvertor;
+    private final CacheService cache;
+
+    private static final String CACHE_NAME = "ORDER";
 
     @PostMapping
     public List<OrderResponseDto> listOrders(@RequestBody OrderSearchDto request){
-        return orderService.listOrders(request).stream()
+        List<OrderResponseDto> orders = (List<OrderResponseDto>) cache.get(CACHE_NAME, "ALL:" + request.getUserId().toString());
+        if(orders == null){
+            orders = orderService.listOrders(request).stream()
                 .map(this::convertOrderToResponseDto)
                 .toList();
+            cache.add(CACHE_NAME, "ALL:" + request.getUserId(), orders);
+        }
+
+        return orders;
     }
 
     @PostMapping("/save")
