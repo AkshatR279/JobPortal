@@ -4,9 +4,8 @@ import com.akshatr.jobportal.model.dto.company.CompanyRequestDto;
 import com.akshatr.jobportal.model.dto.company.CompanyResponseDto;
 import com.akshatr.jobportal.model.entity.Company;
 import com.akshatr.jobportal.service.CompanyService;
+import com.akshatr.jobportal.service.cache.CacheService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.annotation.CachePut;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,25 +15,40 @@ import java.util.List;
 @RequiredArgsConstructor
 public class CompanyController {
     private final CompanyService companyService;
+    private final CacheService cacheService;
+
+    private static final String CACHE_NAME = "COMPANY";
 
     @GetMapping("/{id}")
-    @Cacheable(value = "COMPANY", key = "#id")
     public CompanyResponseDto getCompany(@PathVariable Long id){
-        return generateCompanyResponse(companyService.getCompany(id));
+        CompanyResponseDto company = (CompanyResponseDto) cacheService.get(CACHE_NAME, id.toString());
+        if(company == null){
+            company = generateCompanyResponse(companyService.getCompany(id));
+            cacheService.add(CACHE_NAME, id.toString(), company);
+        }
+
+        return company;
     }
 
     @GetMapping
-    @Cacheable(value = "COMPANIES", key = "'All'")
     public List<CompanyResponseDto> getCompanies(){
-        return companyService.getCompanies().stream()
-                .map(this::generateCompanyResponse)
-                .toList();
+        List<CompanyResponseDto> companyList = (List<CompanyResponseDto>) cacheService.get(CACHE_NAME, "ALL");
+        if(companyList == null){
+            companyList = companyService.getCompanies().stream()
+                    .map(this::generateCompanyResponse)
+                    .toList();
+            cacheService.add(CACHE_NAME, "ALL", companyList);
+        }
+
+        return companyList;
     }
 
     @PostMapping("/save")
-    @CachePut(value = "COMPANY", key = "#result.id")
     public CompanyResponseDto saveCompany(@RequestBody CompanyRequestDto request){
-        return generateCompanyResponse(companyService.saveCompany(request));
+        CompanyResponseDto company = generateCompanyResponse(companyService.saveCompany(request));
+        cacheService.add(CACHE_NAME, company.getId().toString(), company);
+
+        return company;
     }
 
     private CompanyResponseDto generateCompanyResponse(Company company){
