@@ -1,6 +1,6 @@
-package com.akshatr.jobportal.repository;
+package com.akshat.userService.repository;
 
-import com.akshatr.jobportal.model.entity.User;
+import com.akshat.userService.model.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;

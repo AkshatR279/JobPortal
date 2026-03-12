@@ -11,8 +11,7 @@ import lombok.Setter;
 public class Referral extends BaseEntity {
     private String message;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
 
     @OneToOne
     private JobApplication referralFor;

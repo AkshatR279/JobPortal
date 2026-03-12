@@ -1,8 +1,8 @@
-package com.akshatr.jobportal.util;
+package com.akshat.userService.util;
 
-import com.akshatr.jobportal.model.entity.User;
-import com.akshatr.jobportal.model.enums.UserRole;
-import com.akshatr.jobportal.model.utilmodel.JWTClaims;
+import com.akshat.userService.model.entity.User;
+import com.akshat.userService.model.enums.UserRole;
+import com.akshat.userService.model.utilmodel.JWTClaims;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.io.Decoders;

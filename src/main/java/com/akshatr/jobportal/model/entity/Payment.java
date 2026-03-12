@@ -20,6 +20,5 @@ public class Payment extends BaseEntity{
     @ManyToOne
     private Order order;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
 }

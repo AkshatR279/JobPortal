@@ -1,4 +1,4 @@
-package com.akshatr.jobportal.model.enums;
+package com.akshat.userService.model.enums;
 
 public enum UserRole {
     CANDIDATE,

@@ -1,7 +1,7 @@
-package com.akshatr.jobportal.model.dto.user;
+package com.akshat.userService.model.dto;
 
-import com.akshatr.jobportal.model.enums.UserRole;
-import com.akshatr.jobportal.model.enums.UserStatus;
+import com.akshat.userService.model.enums.UserRole;
+import com.akshat.userService.model.enums.UserStatus;
 import lombok.Data;
 
 @Data

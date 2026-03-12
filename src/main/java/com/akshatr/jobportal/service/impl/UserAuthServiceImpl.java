@@ -1,8 +1,6 @@
 package com.akshatr.jobportal.service.impl;
 
-import com.akshatr.jobportal.model.entity.User;
 import com.akshatr.jobportal.model.utilmodel.JWTClaims;
-import com.akshatr.jobportal.repository.UserRepository;
 import com.akshatr.jobportal.service.UserAuthService;
 import com.akshatr.jobportal.util.JWTUtil;
 import io.jsonwebtoken.JwtException;

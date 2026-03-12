@@ -3,15 +3,12 @@ package com.akshatr.jobportal.service.impl;
 import com.akshatr.jobportal.model.dto.order.OrderRequestDto;
 import com.akshatr.jobportal.model.dto.order.OrderSearchDto;
 import com.akshatr.jobportal.model.entity.Order;
-import com.akshatr.jobportal.model.entity.User;
 import com.akshatr.jobportal.model.enums.OrderStatus;
 import com.akshatr.jobportal.repository.OrderRepository;
-import com.akshatr.jobportal.repository.UserRepository;
 import com.akshatr.jobportal.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 

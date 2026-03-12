@@ -1,4 +1,4 @@
-package com.akshatr.jobportal.model.dto.user;
+package com.akshat.userService.model.dto;
 
 import lombok.Builder;
 import lombok.Data;

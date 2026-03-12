@@ -1,11 +1,11 @@
-package com.akshatr.jobportal.service.impl;
+package com.akshat.userService.service.impl;
 
-import com.akshatr.jobportal.model.dto.user.LoginRequestDto;
-import com.akshatr.jobportal.model.dto.user.UserRequestDto;
-import com.akshatr.jobportal.model.entity.User;
-import com.akshatr.jobportal.repository.UserRepository;
-import com.akshatr.jobportal.service.UserService;
-import com.akshatr.jobportal.util.JWTUtil;
+import com.akshat.userService.model.dto.LoginRequestDto;
+import com.akshat.userService.model.dto.UserRequestDto;
+import com.akshat.userService.model.entity.User;
+import com.akshat.userService.repository.UserRepository;
+import com.akshat.userService.service.UserService;
+import com.akshat.userService.util.JWTUtil;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;

@@ -24,8 +24,7 @@ public class Order extends BaseEntity{
     private Double paid;
     private OrderStatus status;
 
-    @ManyToOne
-    private User orderBy;
+    private Long orderById;
 
     @OneToMany(mappedBy = "order")
     private List<Payment> payments;

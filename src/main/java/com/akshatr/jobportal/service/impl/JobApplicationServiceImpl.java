@@ -1,15 +1,11 @@
 package com.akshatr.jobportal.service.impl;
 
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationRequestDto;
-import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationResponseDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationSearchRequest;
-import com.akshatr.jobportal.model.entity.Company;
 import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.model.entity.JobApplication;
-import com.akshatr.jobportal.model.entity.User;
 import com.akshatr.jobportal.repository.JobApplicationRepository;
 import com.akshatr.jobportal.repository.JobRepository;
-import com.akshatr.jobportal.repository.UserRepository;
 import com.akshatr.jobportal.service.JobApplicationService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

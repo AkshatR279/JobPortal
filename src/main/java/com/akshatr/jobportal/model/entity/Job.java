@@ -28,8 +28,7 @@ public class Job extends BaseEntity {
     @ManyToOne
     private Company company;
 
-    @ManyToOne
-    private User user;
+    private Long userId;
 
     @OneToMany(mappedBy = "job")
     private List<JobApplication> jobApplications;

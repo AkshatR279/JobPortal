@@ -1,13 +1,9 @@
 package com.akshatr.jobportal.controller;
 
-import com.akshatr.jobportal.model.dto.job.JobResponseShortDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationRequestDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationResponseDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationSearchRequest;
-import com.akshatr.jobportal.model.dto.user.UserResponseShortDto;
-import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.model.entity.JobApplication;
-import com.akshatr.jobportal.model.entity.User;
 import com.akshatr.jobportal.service.JobApplicationService;
 import com.akshatr.jobportal.util.DtoConvertor;
 import lombok.RequiredArgsConstructor;

@@ -1,11 +1,11 @@
-package com.akshatr.jobportal.controller;
+package com.akshat.userService.controller;
 
-import com.akshatr.jobportal.model.dto.user.LoginRequestDto;
-import com.akshatr.jobportal.model.dto.user.LoginResponseDto;
-import com.akshatr.jobportal.model.dto.user.UserRequestDto;
-import com.akshatr.jobportal.model.dto.user.UserResponseDto;
-import com.akshatr.jobportal.model.entity.User;
-import com.akshatr.jobportal.service.UserService;
+import com.akshat.userService.model.dto.LoginRequestDto;
+import com.akshat.userService.model.dto.LoginResponseDto;
+import com.akshat.userService.model.dto.UserRequestDto;
+import com.akshat.userService.model.dto.UserResponseDto;
+import com.akshat.userService.model.entity.User;
+import com.akshat.userService.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 

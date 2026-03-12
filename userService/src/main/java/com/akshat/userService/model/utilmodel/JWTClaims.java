@@ -1,6 +1,6 @@
-package com.akshatr.jobportal.model.utilmodel;
+package com.akshat.userService.model.utilmodel;
 
-import com.akshatr.jobportal.model.enums.UserRole;
+import com.akshat.userService.model.enums.UserRole;
 import lombok.Builder;
 import lombok.Data;
 
