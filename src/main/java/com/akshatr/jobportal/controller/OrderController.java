@@ -52,7 +52,7 @@ public class OrderController {
                 .tax(order.getTax())
                 .paid(order.getPaid())
                 .status(order.getStatus())
-                .orderBy(dtoConvertor.convertToUserShort(order.getOrderBy()))
+                .orderById(order.getOrderById())
                 .build();
     }
 }

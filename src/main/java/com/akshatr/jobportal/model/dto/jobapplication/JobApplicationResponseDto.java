@@ -15,7 +15,7 @@ public class JobApplicationResponseDto {
     private Long id;
     private String name;
     private JobResponseShortDto job;
-    private UserResponseShortDto user;
+    private Long userId;
     private JobApplicationStatus status;
     private ReferralResponseShortDto referral;
     private Date submittedOn;

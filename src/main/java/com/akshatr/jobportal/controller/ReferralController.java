@@ -31,7 +31,7 @@ public class ReferralController {
                 .createdOn(referral.getCreatedOn())
                 .lastUpdatedOn(referral.getLastUpdatedOn())
                 .application(dtoConvertor.convertToJobApplicationShort(referral.getReferralFor()))
-                .user(dtoConvertor.convertToUserShort(referral.getUser()))
+                .userId(referral.getUserId())
                 .build();
     }
 }

@@ -9,6 +9,6 @@ import lombok.Data;
 @Builder
 public class JobApplicationResponseShortDto {
     private Long id;
-    private UserResponseShortDto user;
+    private Long userId;
     private JobResponseShortDto job;
 }

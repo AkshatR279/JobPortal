@@ -2,10 +2,12 @@ package com.akshatr.jobportal.service.impl;
 
 import com.akshatr.jobportal.model.dto.order.OrderRequestDto;
 import com.akshatr.jobportal.model.dto.order.OrderSearchDto;
+import com.akshatr.jobportal.model.dto.user.UserResponseDto;
 import com.akshatr.jobportal.model.entity.Order;
 import com.akshatr.jobportal.model.enums.OrderStatus;
 import com.akshatr.jobportal.repository.OrderRepository;
 import com.akshatr.jobportal.service.OrderService;
+import com.akshatr.jobportal.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,7 +18,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public List<Order> listOrders(OrderSearchDto request) {
@@ -26,8 +28,8 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order save(OrderRequestDto request) {
-        Optional<User> existingUser = userRepository.findById(request.getOrderById());
-        if(existingUser.isEmpty()){
+        UserResponseDto existingUser = userService.findById(request.getOrderById());
+        if(existingUser == null){
             throw new RuntimeException("Invalid user.");
         }
 
@@ -42,7 +44,7 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderDate(request.getOrderDate());
         order.setCost(request.getCost());
         order.setTax(request.getTax());
-        order.setOrderBy(existingUser.get());
+        order.setOrderById(existingUser.getId());
         order.setPaid(0D);
         order.setStatus(OrderStatus.UNPAID);
 

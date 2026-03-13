@@ -2,13 +2,16 @@ package com.akshatr.jobportal.service.impl;
 
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationRequestDto;
 import com.akshatr.jobportal.model.dto.jobapplication.JobApplicationSearchRequest;
+import com.akshatr.jobportal.model.dto.user.UserResponseDto;
 import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.model.entity.JobApplication;
 import com.akshatr.jobportal.repository.JobApplicationRepository;
 import com.akshatr.jobportal.repository.JobRepository;
 import com.akshatr.jobportal.service.JobApplicationService;
+import com.akshatr.jobportal.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Optional;
@@ -18,7 +21,7 @@ import java.util.Optional;
 public class JobApplicationServiceImpl implements JobApplicationService {
     private final JobApplicationRepository jobApplicationRepository;
     private final JobRepository jobRepository;
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Override
     public List<JobApplication> getJobApplications(JobApplicationSearchRequest request) {
@@ -32,11 +35,12 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         }
 
         if(request.getUserId()>0){
-            Optional<User> user = userRepository.findById(request.getUserId());
-            if(user.isEmpty()){
+            UserResponseDto user = userService.findById(request.getUserId());
+
+            if(user == null){
                 throw new RuntimeException("User not found.");
             }
-            userId = user.get().getId();
+            userId = user.getId();
         }
 
         if((jobId > 0) && (userId > 0)){
@@ -60,8 +64,8 @@ public class JobApplicationServiceImpl implements JobApplicationService {
             throw new RuntimeException("Job not found.");
         }
 
-        Optional<User> user = userRepository.findById(request.getUserId());
-        if(user.isEmpty()){
+        UserResponseDto user = userService.findById(request.getUserId());
+        if(user ==  null){
             throw new RuntimeException("User not found.");
         }
 
@@ -73,7 +77,7 @@ public class JobApplicationServiceImpl implements JobApplicationService {
 
         jobApplication.setName(request.getName());
         jobApplication.setJob(job.get());
-        jobApplication.setUser(user.get());
+        jobApplication.setUserId(user.getId());
         jobApplication.setStatus(request.getStatus());
         jobApplication.setSubmittedOn(request.getSubmittedOn());
 

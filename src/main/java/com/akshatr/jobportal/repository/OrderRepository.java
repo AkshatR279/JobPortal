@@ -10,6 +10,6 @@ import java.util.List;
 public interface OrderRepository extends JpaRepository<Order,Long> {
     @Query("SELECT O" +
             " FROM Order O" +
-            " WHERE (:orderBy = 0 OR O.orderBy.id = :orderBy)")
+            " WHERE (:orderBy = 0 OR O.orderById = :orderBy)")
     public List<Order> listOrders(@Param("orderBy") Long orderBy);
 }

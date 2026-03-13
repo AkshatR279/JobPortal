@@ -17,7 +17,7 @@ public class DtoConvertor {
                 .build();
     }
 
-    public UserResponseShortDto convertToUserShort(User user){
+    public UserResponseShortDto convertToUserShort(UserResponseShortDto user){
         return UserResponseShortDto.builder()
                 .id(user.getId())
                 .name(user.getName())
@@ -28,7 +28,7 @@ public class DtoConvertor {
         return JobApplicationResponseShortDto.builder()
                 .id(jobApplication.getId())
                 .job(convertToJobShort(jobApplication.getJob()))
-                .user(convertToUserShort(jobApplication.getUser()))
+                .userId(jobApplication.getUserId())
                 .build();
     }
 
@@ -36,7 +36,7 @@ public class DtoConvertor {
         return ReferralResponseShortDto.builder()
                 .id(referral.getId())
                 .message(referral.getMessage())
-                .user(convertToUserShort(referral.getUser()))
+                .userId(referral.getUserId())
                 .build();
     }
 

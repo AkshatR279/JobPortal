@@ -1,9 +1,11 @@
 package com.akshatr.jobportal.integration.paymentgateway.strategy;
 
 import com.akshatr.jobportal.config.PaymentGatewayConfig;
+import com.akshatr.jobportal.model.dto.user.UserResponseDto;
 import com.akshatr.jobportal.model.entity.Payment;
 import com.akshatr.jobportal.model.enums.PaymentGateway;
 import com.akshatr.jobportal.model.utilmodel.Credentials;
+import com.akshatr.jobportal.service.UserService;
 import com.razorpay.Order;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
@@ -16,6 +18,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class RazorpayPaymentGatewayStrategy extends PaymentGatewayStrategy{
     private final PaymentGatewayConfig config;
+    private final UserService userService;
 
     @Override
     public PaymentGateway getPaymentGateway() {
@@ -96,6 +99,11 @@ public class RazorpayPaymentGatewayStrategy extends PaymentGatewayStrategy{
 
         int amount = payment.getAmount().intValue()*100;
 
+        UserResponseDto user = userService.findById(payment.getUserId());
+        if(user == null){
+            throw new RuntimeException("User not found.");
+        }
+
         JSONObject paymentLinkRequest = new JSONObject();
         paymentLinkRequest.put("amount", amount);
         paymentLinkRequest.put("currency","INR");
@@ -106,7 +114,7 @@ public class RazorpayPaymentGatewayStrategy extends PaymentGatewayStrategy{
         paymentLinkRequest.put("description", "Payment towards Order:" + payment.getOrder().getName());
 
         JSONObject customer = new JSONObject();
-        customer.put("name", payment.getUser().getName());
+        customer.put("name", user.getName());
         customer.put("contact", "");
         customer.put("email", "");
         paymentLinkRequest.put("customer",customer);

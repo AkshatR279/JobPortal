@@ -13,7 +13,7 @@ public class ReferralResponseDto {
     private Long id;
     private String name;
     private String message;
-    private UserResponseShortDto user;
+    private Long userId;
     private JobApplicationResponseShortDto application;
     private Date createdOn;
     private Date lastUpdatedOn;

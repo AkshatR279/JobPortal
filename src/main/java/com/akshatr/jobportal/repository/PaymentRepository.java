@@ -10,6 +10,6 @@ import java.util.List;
 public interface PaymentRepository extends JpaRepository<Payment,Long> {
     @Query("SELECT P FROM Payment P" +
             " WHERE (:orderId = 0 OR P.order.id = :orderId) " +
-            " AND (:userId = 0 OR P.user.id = :userId)")
+            " AND (:userId = 0 OR P.userId = :userId)")
     public List<Payment> listPayments(@Param("orderId") Long orderId, @Param("userId") Long userId);
 }

@@ -38,7 +38,7 @@ public class JobApplicationController {
                 .id(jobApplication.getId())
                 .name(jobApplication.getName())
                 .job(dtoConvertor.convertToJobShort(jobApplication.getJob()))
-                .user(dtoConvertor.convertToUserShort(jobApplication.getUser()))
+                .userId(jobApplication.getUserId())
                 .referral(jobApplication.getReferral() != null ? dtoConvertor.convertReferralToResponseShort(jobApplication.getReferral()) : null)
                 .status(jobApplication.getStatus())
                 .submittedOn(jobApplication.getSubmittedOn())

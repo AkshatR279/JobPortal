@@ -11,6 +11,6 @@ public interface JobApplicationRepository extends JpaRepository<JobApplication,L
     public List<JobApplication> findByJobId(Long jobId);
     public List<JobApplication> findByUserId(Long userId);
 
-    @Query("SELECT J FROM JobApplication J WHERE J.job.id = :jobId AND J.user.id = :userId")
+    @Query("SELECT J FROM JobApplication J WHERE J.job.id = :jobId AND J.userId = :userId")
     public List<JobApplication> findBySearch(@Param("jobId") Long jobId, @Param("userId") Long userId);
 }

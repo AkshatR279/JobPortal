@@ -20,5 +20,5 @@ public class OrderResponseDto {
     private Double tax;
     private Double paid;
     private OrderStatus status;
-    private UserResponseShortDto orderBy;
+    private Long orderById;
 }

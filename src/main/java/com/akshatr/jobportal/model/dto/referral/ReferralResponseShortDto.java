@@ -9,5 +9,5 @@ import lombok.Data;
 public class ReferralResponseShortDto {
     private Long id;
     private String message;
-    private UserResponseShortDto user;
+    private Long userId;
 }

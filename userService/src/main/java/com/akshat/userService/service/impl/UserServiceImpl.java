@@ -1,5 +1,6 @@
 package com.akshat.userService.service.impl;
 
+import com.akshat.userService.exceptions.BadRequestException;
 import com.akshat.userService.model.dto.LoginRequestDto;
 import com.akshat.userService.model.dto.UserRequestDto;
 import com.akshat.userService.model.entity.User;
@@ -21,8 +22,13 @@ public class UserServiceImpl implements UserService {
     private final JWTUtil jwtUtil;
 
     @Override
-    public Optional<User> findById(Long id) {
-        return userRepository.findById(id);
+    public User findById(Long id) {
+        Optional<User> user = userRepository.findById(id);
+        if(user.isEmpty()){
+            throw new BadRequestException("User not found.");
+        }
+
+        return user.get();
     }
 
     @Override
@@ -50,12 +56,12 @@ public class UserServiceImpl implements UserService {
     public User login(LoginRequestDto request) {
         Optional<User> loginUser = userRepository.findByUsername(request.getUsername());
         if(loginUser.isEmpty()){
-            throw new RuntimeException("No user found with the provided username.");
+            throw new BadRequestException("No user found with the provided username.");
         }
 
         User user = loginUser.get();
         if(!passwordEncoder.matches(request.getPassword(), user.getPassword())){
-            throw new RuntimeException("Invalid password.");
+            throw new BadRequestException("Invalid password.");
         }
 
         user.setToken(jwtUtil.generateToken(user));
