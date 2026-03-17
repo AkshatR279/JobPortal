@@ -1,10 +1,17 @@
 package com.akshatr.jobportal.service.impl;
 
+import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.user.UserAuthRequest;
 import com.akshatr.jobportal.model.dto.user.UserAuthResponse;
+import com.akshatr.jobportal.model.dto.user.UserDetailsDTO;
 import com.akshatr.jobportal.service.UserAuthService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpMethod;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
@@ -19,13 +26,28 @@ public class UserAuthServiceImpl implements UserAuthService {
         UserAuthRequest request = new UserAuthRequest();
         request.setToken(token);
 
-        UserAuthResponse authResponse = restTemplate.postForObject(
-                "http://userService/v1/users/validate",
-                request,
-                UserAuthResponse.class
+        ResponseEntity<GeneralAPIResponse> response = restTemplate.exchange(
+                "http://userService/api/users/validate",
+                HttpMethod.POST,
+                new HttpEntity<>(request),
+                GeneralAPIResponse.class
         );
 
-        if(authResponse==null){
+        GeneralAPIResponse apiResponse = response.getBody();
+
+        if(apiResponse == null){
+            throw new RuntimeException("Failed to authenticate token.");
+        }
+
+        if(!apiResponse.getSuccess()){
+            throw new JwtException(apiResponse.getMessage());
+        }
+
+        UserAuthResponse authResponse = (new ObjectMapper()).convertValue(
+                apiResponse.getData(),
+                UserAuthResponse.class
+        );
+        if(authResponse == null){
             throw new RuntimeException("Failed to authenticate token.");
         }
 
@@ -33,6 +55,17 @@ public class UserAuthServiceImpl implements UserAuthService {
             throw new JwtException(authResponse.getMessage());
         }
 
-        return authResponse.getUserDetails();
+        UserDetailsDTO user = authResponse.getUserDetails();
+        if(user == null){
+            throw new RuntimeException("Failed to authenticate token.");
+        }
+
+        return new org.springframework.security.core.userdetails.User(
+                user.getUsername(),
+                user.getPassword(),
+                user.getAuthorities().stream()
+                        .map(SimpleGrantedAuthority::new)
+                        .toList()
+        );
     }
 }

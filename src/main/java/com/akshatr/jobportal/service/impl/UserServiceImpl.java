@@ -1,5 +1,6 @@
 package com.akshatr.jobportal.service.impl;
 
+import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.user.UserResponseDto;
 import com.akshatr.jobportal.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -16,9 +17,16 @@ public class UserServiceImpl implements UserService {
         if(id == null){
             throw new RuntimeException("Invalid user.");
         }
-        return restTemplate.getForObject(
-                "http://userService/vi/users/" + id,
-                UserResponseDto.class
+
+        GeneralAPIResponse response =  restTemplate.getForObject(
+                "http://userService/api/users/" + id,
+                GeneralAPIResponse.class
         );
+
+        if(response == null){
+            throw new RuntimeException("Failed to fetch user.");
+        }
+
+        return (UserResponseDto) response.getData();
     }
 }

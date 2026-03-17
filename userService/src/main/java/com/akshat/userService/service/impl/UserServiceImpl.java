@@ -38,6 +38,11 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User saveUser(UserRequestDto request) {
+        Optional<User> duplicateUser = userRepository.findByUsername(request.getName());
+        if(duplicateUser.isPresent()){
+            throw new BadRequestException("User with provided username already exists.");
+        }
+
         User user = new User();
         Optional<User> existingUser = userRepository.findById(request.getId());
         if(existingUser.isPresent()){

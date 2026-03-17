@@ -1,11 +1,15 @@
 package com.akshatr.jobportal.controller;
 
+import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.company.CompanyRequestDto;
 import com.akshatr.jobportal.model.dto.company.CompanyResponseDto;
 import com.akshatr.jobportal.model.entity.Company;
 import com.akshatr.jobportal.service.CompanyService;
 import com.akshatr.jobportal.service.cache.CacheService;
+import com.akshatr.jobportal.util.ExceptionHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,36 +20,70 @@ import java.util.List;
 public class CompanyController {
     private final CompanyService companyService;
     private final CacheService cacheService;
+    private final ExceptionHandler exceptionHandler;
 
     private static final String CACHE_NAME = "COMPANY";
 
     @GetMapping("/{id}")
-    public CompanyResponseDto getCompany(@PathVariable Long id){
-        CompanyResponseDto company = (CompanyResponseDto) cacheService.get(CACHE_NAME, id.toString());
-        if(company == null){
-            company = generateCompanyResponse(companyService.getCompany(id));
-            cacheService.add(CACHE_NAME, id.toString(), company);
-        }
+    public ResponseEntity<GeneralAPIResponse> getCompany(@PathVariable Long id){
+        try {
+            CompanyResponseDto company = (CompanyResponseDto) cacheService.get(CACHE_NAME, id.toString());
+            if (company == null) {
+                company = generateCompanyResponse(companyService.getCompany(id));
+                cacheService.add(CACHE_NAME, id.toString(), company);
+            }
 
-        return company;
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(company)
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
     @GetMapping
-    public List<CompanyResponseDto> getCompanies(){
-        List<CompanyResponseDto> companyList = (List<CompanyResponseDto>) cacheService.get(CACHE_NAME, "ALL");
-        if(companyList == null){
-            companyList = companyService.getCompanies().stream()
-                    .map(this::generateCompanyResponse)
-                    .toList();
-            cacheService.add(CACHE_NAME, "ALL", companyList);
-        }
+    public ResponseEntity<GeneralAPIResponse> getCompanies(){
+        try {
+            List<CompanyResponseDto> companyList = (List<CompanyResponseDto>) cacheService.get(CACHE_NAME, "ALL");
+            if (companyList == null) {
+                companyList = companyService.getCompanies().stream()
+                        .map(this::generateCompanyResponse)
+                        .toList();
+                cacheService.add(CACHE_NAME, "ALL", companyList);
+            }
 
-        return companyList;
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(companyList)
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
     @PostMapping("/save")
-    public CompanyResponseDto saveCompany(@RequestBody CompanyRequestDto request){
-        return generateCompanyResponse(companyService.saveCompany(request));
+    public ResponseEntity<GeneralAPIResponse> saveCompany(@RequestBody CompanyRequestDto request){
+        try {
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(generateCompanyResponse(companyService.saveCompany(request)))
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            throw new RuntimeException(ex);
+        }
     }
 
     private CompanyResponseDto generateCompanyResponse(Company company){

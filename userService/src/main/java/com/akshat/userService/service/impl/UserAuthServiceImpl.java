@@ -1,5 +1,6 @@
 package com.akshat.userService.service.impl;
 
+import com.akshat.userService.model.dto.UserDetailsDTO;
 import com.akshat.userService.model.entity.User;
 import com.akshat.userService.model.utilmodel.JWTClaims;
 import com.akshat.userService.repository.UserRepository;
@@ -8,7 +9,6 @@ import com.akshat.userService.util.JWTUtil;
 import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -21,7 +21,7 @@ public class UserAuthServiceImpl implements UserAuthService {
     private final UserRepository userRepository;
 
     @Override
-    public UserDetails validateToken(String token) {
+    public UserDetailsDTO validateToken(String token) {
         JWTClaims claims = jwtUtil.decodeToken(token);
 
         Optional<User> user = userRepository.findById(claims.getId());
@@ -36,12 +36,11 @@ public class UserAuthServiceImpl implements UserAuthService {
         return loadUserAuth(user.get());
     }
 
-    @Override
-    public UserDetails loadUserAuth(User user) {
-        return new org.springframework.security.core.userdetails.User(
+    private UserDetailsDTO loadUserAuth(User user) {
+        return new UserDetailsDTO(
                 user.getName(),
                 user.getPassword(),
-                List.of(new SimpleGrantedAuthority(user.getRole().name()))
+                List.of(new SimpleGrantedAuthority(user.getRole().name()).toString())
         );
     }
 }
