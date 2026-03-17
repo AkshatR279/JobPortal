@@ -21,13 +21,18 @@ public class ExceptionHandler {
     };
 
     public ResponseEntity<GeneralAPIResponse> convertExceptionToResponse(RuntimeException ex){
+        RuntimeException e = ex;
+        if(!exceptionMap.containsKey(e.getClass())){
+            e = new RuntimeException(ex.getMessage());
+        }
+
         return new ResponseEntity<GeneralAPIResponse>(
                 GeneralAPIResponse.builder()
                     .success(false)
                     .message(ex.getMessage())
-                    .status(exceptionMap.get(ex.getClass()).value())
+                    .status(exceptionMap.get(e.getClass()).value())
                     .build(),
-                exceptionMap.get(ex.getClass())
+                exceptionMap.get(e.getClass())
         );
     }
 }
