@@ -3,7 +3,9 @@ package com.akshatr.jobportal.service.impl;
 import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.user.UserResponseDto;
 import com.akshatr.jobportal.service.UserService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -18,15 +20,25 @@ public class UserServiceImpl implements UserService {
             throw new RuntimeException("Invalid user.");
         }
 
-        GeneralAPIResponse response =  restTemplate.getForObject(
+        ResponseEntity<GeneralAPIResponse> response = restTemplate.getForEntity(
                 "http://userService/api/users/" + id,
                 GeneralAPIResponse.class
         );
 
-        if(response == null){
+        GeneralAPIResponse apiResponse = response.getBody();
+        if(apiResponse == null || !apiResponse.getSuccess()){
             throw new RuntimeException("Failed to fetch user.");
         }
 
-        return (UserResponseDto) response.getData();
+        UserResponseDto userResponseDto = (new ObjectMapper()).convertValue(
+                apiResponse.getData(),
+                UserResponseDto.class
+        );
+
+        if(userResponseDto == null){
+            throw new RuntimeException("Failed to fetch user.");
+        }
+
+        return userResponseDto;
     }
 }

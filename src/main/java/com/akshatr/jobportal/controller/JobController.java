@@ -1,11 +1,15 @@
 package com.akshatr.jobportal.controller;
 
+import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.job.JobRequestDto;
 import com.akshatr.jobportal.model.dto.job.JobResponseDto;
 import com.akshatr.jobportal.model.entity.Job;
 import com.akshatr.jobportal.service.JobService;
 import com.akshatr.jobportal.service.cache.CacheService;
+import com.akshatr.jobportal.util.ExceptionHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -16,36 +20,70 @@ import java.util.List;
 public class JobController {
     private final JobService jobService;
     private final CacheService cache;
+    private final ExceptionHandler exceptionHandler;
 
     private static final String CACHE_NAME = "JOB";
 
     @GetMapping
-    public List<JobResponseDto> getJobs(){
-        List<JobResponseDto> jobs = (List<JobResponseDto>) cache.get(CACHE_NAME, "ALL");
-        if(jobs == null){
-            jobs = jobService.getJobs().stream()
-                    .map(this::convertJobToDto)
-                    .toList();
-            cache.add(CACHE_NAME, "ALL", jobs);
-        }
+    public ResponseEntity<GeneralAPIResponse>  getJobs(){
+        try {
+            List<JobResponseDto> jobs = (List<JobResponseDto>) cache.get(CACHE_NAME, "ALL");
+            if (jobs == null) {
+                jobs = jobService.getJobs().stream()
+                        .map(this::convertJobToDto)
+                        .toList();
+                cache.add(CACHE_NAME, "ALL", jobs);
+            }
 
-        return jobs;
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(jobs)
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
     @GetMapping("/{id}")
-    public JobResponseDto getJob(@RequestParam(name = "id") Long id){
-        JobResponseDto job = (JobResponseDto) cache.get(CACHE_NAME, id.toString());
-        if(job == null){
-            job = convertJobToDto(jobService.getJob(id));
-            cache.add(CACHE_NAME, id.toString(), job);
-        }
+    public ResponseEntity<GeneralAPIResponse> getJob(@PathVariable Long id){
+        try {
+            JobResponseDto job = (JobResponseDto) cache.get(CACHE_NAME, id.toString());
+            if (job == null) {
+                job = convertJobToDto(jobService.getJob(id));
+                cache.add(CACHE_NAME, id.toString(), job);
+            }
 
-        return job;
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(job)
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
     @PostMapping("/save")
-    public JobResponseDto saveJob(@RequestBody JobRequestDto request){
-        return convertJobToDto(jobService.saveJob(request));
+    public ResponseEntity<GeneralAPIResponse> saveJob(@RequestBody JobRequestDto request){
+        try {
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(convertJobToDto(jobService.saveJob(request)))
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
     private JobResponseDto convertJobToDto(Job job){

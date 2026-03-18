@@ -7,11 +7,12 @@ import com.akshatr.jobportal.model.enums.JobApplicationStatus;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
-public class JobApplicationResponseDto {
+public class JobApplicationResponseDto implements Serializable {
     private Long id;
     private String name;
     private JobResponseShortDto job;

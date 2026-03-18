@@ -4,11 +4,12 @@ import com.akshatr.jobportal.model.enums.JobStatus;
 import lombok.Builder;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
 
 @Data
 @Builder
-public class JobResponseDto {
+public class JobResponseDto implements Serializable {
     private Long id;
     private String name;
     private Date createdOn;

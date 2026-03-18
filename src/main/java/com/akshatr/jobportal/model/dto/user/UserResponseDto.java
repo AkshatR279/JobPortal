@@ -1,13 +1,17 @@
 package com.akshatr.jobportal.model.dto.user;
 import com.akshatr.jobportal.model.enums.UserRole;
 import com.akshatr.jobportal.model.enums.UserStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.Date;
 
 @Data
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserResponseDto {
     private Long id;
     private String name;

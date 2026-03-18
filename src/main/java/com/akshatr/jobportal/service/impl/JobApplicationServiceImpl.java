@@ -24,6 +24,21 @@ public class JobApplicationServiceImpl implements JobApplicationService {
     private final UserService userService;
 
     @Override
+    public JobApplication getJobApplication(Long id) {
+        Optional<JobApplication> jobApplication = jobApplicationRepository.findById(id);
+        if(jobApplication.isEmpty()){
+            throw new RuntimeException("Job Application not found.");
+        }
+
+        return jobApplication.get();
+    }
+
+    @Override
+    public List<JobApplication> getAllJobApplications(){
+        return jobApplicationRepository.findAll();
+    }
+
+    @Override
     public List<JobApplication> getJobApplications(JobApplicationSearchRequest request) {
         Long jobId = 0L, userId = 0L;
         if(request.getJobId()>0){
@@ -82,10 +97,6 @@ public class JobApplicationServiceImpl implements JobApplicationService {
         jobApplication.setSubmittedOn(request.getSubmittedOn());
 
         return jobApplicationRepository.save(jobApplication);
-    }
-
-    private List<JobApplication> getAllJobApplications(){
-        return jobApplicationRepository.findAll();
     }
 
     private List<JobApplication> getJobApplicationsByJob(Long jobId){
