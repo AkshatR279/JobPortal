@@ -1,9 +1,10 @@
-package com.akshatr.jobportal.model.dto.order;
+package com.akshatr.orderService.model.dto.order;
 
-import com.akshatr.jobportal.model.enums.OrderStatus;
-import com.akshatr.jobportal.model.enums.OrderType;
+import com.akshatr.orderService.model.enums.OrderStatus;
+import com.akshatr.orderService.model.enums.OrderType;
 import lombok.Builder;
 import lombok.Data;
+
 import java.util.Date;
 
 @Data

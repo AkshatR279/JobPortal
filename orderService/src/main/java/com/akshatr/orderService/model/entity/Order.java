@@ -1,16 +1,13 @@
-package com.akshatr.jobportal.model.entity;
+package com.akshatr.orderService.model.entity;
 
-import com.akshatr.jobportal.model.enums.OrderStatus;
-import com.akshatr.jobportal.model.enums.OrderType;
+import com.akshatr.orderService.model.enums.OrderStatus;
+import com.akshatr.orderService.model.enums.OrderType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
-
 import java.util.Date;
-import java.util.List;
+
 
 @Entity
 @Table(name = "tbl_Orders")
@@ -23,9 +20,5 @@ public class Order extends BaseEntity{
     private Double tax;
     private Double paid;
     private OrderStatus status;
-
     private Long orderById;
-
-    @OneToMany(mappedBy = "order")
-    private List<Payment> payments;
 }

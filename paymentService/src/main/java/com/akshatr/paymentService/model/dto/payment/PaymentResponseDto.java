@@ -1,9 +1,8 @@
-package com.akshatr.jobportal.model.dto.payment;
+package com.akshatr.paymentService.model.dto.payment;
 
-import com.akshatr.jobportal.model.dto.order.OrderResponseShortDto;
-import com.akshatr.jobportal.model.entity.Order;
-import com.akshatr.jobportal.model.enums.PaymentMethod;
-import com.akshatr.jobportal.model.enums.PaymentStatus;
+import com.akshatr.paymentService.model.dto.order.OrderResponseShortDto;
+import com.akshatr.paymentService.model.enums.PaymentMethod;
+import com.akshatr.paymentService.model.enums.PaymentStatus;
 import lombok.Builder;
 import lombok.Data;
 

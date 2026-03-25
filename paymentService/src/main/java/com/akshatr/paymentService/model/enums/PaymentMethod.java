@@ -1,4 +1,4 @@
-package com.akshatr.jobportal.model.enums;
+package com.akshatr.paymentService.model.enums;
 
 public enum PaymentMethod {
     PAYMENT_GATEWAY

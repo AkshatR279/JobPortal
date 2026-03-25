@@ -6,7 +6,6 @@ import com.akshatr.jobportal.model.entity.Payment;
 import com.akshatr.jobportal.model.enums.PaymentGateway;
 import com.akshatr.jobportal.model.utilmodel.Credentials;
 import com.akshatr.jobportal.service.UserService;
-import com.razorpay.Order;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;

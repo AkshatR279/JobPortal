@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.EnumMap;
-import java.util.HashMap;
 import java.util.Map;
 
 @Configuration
