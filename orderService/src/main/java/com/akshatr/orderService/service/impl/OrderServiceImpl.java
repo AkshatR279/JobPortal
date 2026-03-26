@@ -1,12 +1,16 @@
 package com.akshatr.orderService.service.impl;
 
+import com.akshatr.orderService.exceptions.BadRequestException;
 import com.akshatr.orderService.model.dto.order.OrderRequestDto;
+import com.akshatr.orderService.model.dto.order.OrderSearchDto;
 import com.akshatr.orderService.model.entity.Order;
+import com.akshatr.orderService.model.enums.OrderStatus;
 import com.akshatr.orderService.repository.OrderRepository;
 import com.akshatr.orderService.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,17 +20,12 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public Order createOrder(OrderRequestDto request) {
-        Order order = new Order();
         Optional<Order> existingOrder = orderRepository.findById(request.getId());
         if(existingOrder.isPresent()){
-            order = existingOrder.get();;
-        }
-        else{
-
+            throw new BadRequestException("Order already created.");
         }
 
-
-
+        Order order = new Order();
         order.setName("INV" + request.getOrderType().toString().substring(0,2) + System.currentTimeMillis());
         order.setOrderType(request.getOrderType());
         order.setOrderDate(request.getOrderDate());
@@ -35,7 +34,26 @@ public class OrderServiceImpl implements OrderService {
         order.setOrderById(request.getOrderById());
         order.setPaid(0D);
         order.setStatus(OrderStatus.UNPAID);
-
         return orderRepository.save(order);
+    }
+
+    @Override
+    public Order getOrder(Long id) {
+        Optional<Order> order = orderRepository.findById(id);
+        if(order.isEmpty()){
+            throw new BadRequestException("Order not found.");
+        }
+
+        return order.get();
+    }
+
+    @Override
+    public List<Order> listOrders() {
+        return orderRepository.findAll();
+    }
+
+    @Override
+    public List<Order> search(OrderSearchDto request) {
+        return orderRepository.search(request.getUserId());
     }
 }

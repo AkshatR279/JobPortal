@@ -1,58 +1,83 @@
 package com.akshatr.jobportal.controller;
 
+import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.order.OrderRequestDto;
-import com.akshatr.jobportal.model.dto.order.OrderResponseDto;
 import com.akshatr.jobportal.model.dto.order.OrderSearchDto;
-import com.akshatr.jobportal.model.entity.Order;
 import com.akshatr.jobportal.service.OrderService;
-import com.akshatr.jobportal.service.cache.CacheService;
-import com.akshatr.jobportal.util.DtoConvertor;
+import com.akshatr.jobportal.util.ExceptionHandler;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @RestController
 @RequestMapping("/orders")
 @RequiredArgsConstructor
 public class OrderController {
     private final OrderService orderService;
-    private final DtoConvertor dtoConvertor;
-    private final CacheService cache;
+    private final ExceptionHandler exceptionHandler;
 
-    private static final String CACHE_NAME = "ORDER";
-
-    @PostMapping
-    public List<OrderResponseDto> listOrders(@RequestBody OrderSearchDto request){
-        List<OrderResponseDto> orders = (List<OrderResponseDto>) cache.get(CACHE_NAME, "ALL:" + request.getUserId().toString());
-        if(orders == null){
-            orders = orderService.listOrders(request).stream()
-                .map(this::convertOrderToResponseDto)
-                .toList();
-            cache.add(CACHE_NAME, "ALL:" + request.getUserId(), orders);
+    @PostMapping("/create")
+    public ResponseEntity<GeneralAPIResponse> createOrder(@RequestBody OrderRequestDto request){
+        try{
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(orderService.createOrder(request))
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
         }
-
-        return orders;
     }
 
-    @PostMapping("/save")
-    public OrderResponseDto save(@RequestBody OrderRequestDto request){
-        return convertOrderToResponseDto(orderService.save(request));
+    @GetMapping("/{id}")
+    public ResponseEntity<GeneralAPIResponse> getOrder(@PathVariable Long id){
+        try{
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(orderService.getOrder(id))
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 
-    private OrderResponseDto convertOrderToResponseDto(Order order){
-        return OrderResponseDto.builder()
-                .id(order.getId())
-                .name(order.getName())
-                .createdOn(order.getCreatedOn())
-                .lastUpdatedOn(order.getLastUpdatedOn())
-                .orderDate(order.getOrderDate())
-                .orderType(order.getOrderType())
-                .cost(order.getCost())
-                .tax(order.getTax())
-                .paid(order.getPaid())
-                .status(order.getStatus())
-                .orderById(order.getOrderById())
-                .build();
+    @GetMapping
+    public ResponseEntity<GeneralAPIResponse> listOrders(){
+        try{
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(orderService.listOrders())
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
+    }
+
+    @PostMapping("/search")
+    public ResponseEntity<GeneralAPIResponse> search(@RequestBody OrderSearchDto request){
+        try{
+            return ResponseEntity.ok(
+                    GeneralAPIResponse.builder()
+                            .success(true)
+                            .message("Success")
+                            .status(HttpStatus.OK.value())
+                            .data(orderService.search(request))
+                            .build()
+            );
+        } catch (RuntimeException ex) {
+            return exceptionHandler.convertExceptionToResponse(ex);
+        }
     }
 }
