@@ -82,7 +82,7 @@ public class CompanyController {
                             .build()
             );
         } catch (RuntimeException ex) {
-            throw new RuntimeException(ex);
+            return exceptionHandler.convertExceptionToResponse(ex);
         }
     }
 
