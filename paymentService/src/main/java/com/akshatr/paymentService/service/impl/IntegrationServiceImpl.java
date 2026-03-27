@@ -1,0 +1,31 @@
+package com.akshatr.paymentService.service.impl;
+
+import com.akshatr.paymentService.exceptions.BadRequestException;
+import com.akshatr.paymentService.model.dto.integration.PaymentGatewayStatus;
+import com.akshatr.paymentService.model.dto.integration.PaymentGatewayWebhook;
+import com.akshatr.paymentService.model.enums.PaymentGateway;
+import com.akshatr.paymentService.model.enums.PaymentStatus;
+import com.akshatr.paymentService.paymentgateway.factory.PaymentGatewayStrategyFactory;
+import com.akshatr.paymentService.paymentgateway.strategy.PaymentGatewayStrategy;
+import com.akshatr.paymentService.service.IntegrationService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class IntegrationServiceImpl implements IntegrationService {
+    private final PaymentGatewayStrategyFactory paymentGatewayStrategyFactory;
+
+    @Override
+    public void confirmPaymentStatus(PaymentGatewayWebhook webhookRequest) {
+        PaymentGatewayStrategy paymentGatewayStrategy = paymentGatewayStrategyFactory.getStrategy(webhookRequest.getPaymentGateway());
+
+        if (!paymentGatewayStrategy.verifyWebhook(webhookRequest)) {
+            throw new BadRequestException("Invalid signature.");
+        }
+
+        PaymentGatewayStatus paymentGatewayStatus = paymentGatewayStrategy.processWebhook(webhookRequest);
+    }
+}

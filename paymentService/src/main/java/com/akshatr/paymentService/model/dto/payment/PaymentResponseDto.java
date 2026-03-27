@@ -18,5 +18,6 @@ public class PaymentResponseDto {
     private Double amount;
     private PaymentStatus status;
     private PaymentMethod paymentMethod;
-    private OrderResponseShortDto order;
+    private Long orderId;
+    private Long userId;
 }
