@@ -1,7 +1,7 @@
-package com.akshatr.jobportal.integration.paymentgateway.factory;
+package com.akshatr.paymentService.paymentgateway.factory;
 
-import com.akshatr.jobportal.integration.paymentgateway.strategy.PaymentGatewayStrategy;
-import com.akshatr.jobportal.model.enums.PaymentGateway;
+import com.akshatr.paymentService.model.enums.PaymentGateway;
+import com.akshatr.paymentService.paymentgateway.strategy.PaymentGatewayStrategy;
 import org.springframework.stereotype.Component;
 
 import java.util.EnumMap;

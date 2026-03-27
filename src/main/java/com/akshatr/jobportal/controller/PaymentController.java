@@ -32,16 +32,5 @@ public class PaymentController {
         return paymentService.create(request);
     }
 
-    private PaymentResponseDto convertPaymentToResponseDto(Payment payment){
-        return PaymentResponseDto.builder()
-                .id(payment.getId())
-                .name(payment.getName())
-                .createdOn(payment.getCreatedOn())
-                .lastUpdatedOn(payment.getLastUpdatedOn())
-                .order(dtoConvertor.convertOrderToResponseShort(payment.getOrder()))
-                .amount(payment.getAmount())
-                .paymentMethod(payment.getPaymentMethod())
-                .status(payment.getStatus())
-                .build();
-    }
+
 }

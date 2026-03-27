@@ -1,0 +1,23 @@
+package com.akshatr.paymentService.model.dto.user;
+import com.akshatr.paymentService.model.enums.UserRole;
+import com.akshatr.paymentService.model.enums.UserStatus;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import java.util.Date;
+
+@Data
+@Builder
+@NoArgsConstructor
+@AllArgsConstructor
+public class UserResponseDto {
+    private Long id;
+    private String name;
+    private String password;
+    private UserRole role;
+    private UserStatus status;
+    private Date createdOn;
+    private Date lastUpdatedOn;
+}

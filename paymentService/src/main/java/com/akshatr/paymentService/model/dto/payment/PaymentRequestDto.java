@@ -9,5 +9,6 @@ public class PaymentRequestDto {
     private String name;
     private Double amount;
     private PaymentMethod paymentMethod;
+    private Long userId;
     private Long orderId;
 }

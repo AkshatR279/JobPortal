@@ -1,4 +1,4 @@
-package com.akshatr.jobportal.model.utilmodel;
+package com.akshatr.paymentService.model.utilmodel;
 
 import lombok.Data;
 

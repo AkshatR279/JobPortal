@@ -1,7 +1,7 @@
-package com.akshatr.jobportal.config;
+package com.akshatr.paymentService.config;
 
-import com.akshatr.jobportal.model.enums.PaymentGateway;
-import com.akshatr.jobportal.model.utilmodel.Credentials;
+import com.akshatr.paymentService.model.enums.PaymentGateway;
+import com.akshatr.paymentService.model.utilmodel.Credentials;
 import lombok.Getter;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Configuration;

@@ -1,11 +1,11 @@
-package com.akshatr.jobportal.integration.paymentgateway.strategy;
+package com.akshatr.paymentService.paymentgateway.strategy;
 
-import com.akshatr.jobportal.config.PaymentGatewayConfig;
-import com.akshatr.jobportal.model.dto.user.UserResponseDto;
-import com.akshatr.jobportal.model.entity.Payment;
-import com.akshatr.jobportal.model.enums.PaymentGateway;
-import com.akshatr.jobportal.model.utilmodel.Credentials;
-import com.akshatr.jobportal.service.UserService;
+import com.akshatr.paymentService.config.PaymentGatewayConfig;
+import com.akshatr.paymentService.model.dto.user.UserResponseDto;
+import com.akshatr.paymentService.model.entity.Payment;
+import com.akshatr.paymentService.model.enums.PaymentGateway;
+import com.akshatr.paymentService.model.utilmodel.Credentials;
+import com.akshatr.paymentService.service.UserService;
 import com.razorpay.PaymentLink;
 import com.razorpay.RazorpayClient;
 import com.razorpay.RazorpayException;
@@ -32,7 +32,7 @@ public class RazorpayPaymentGatewayStrategy extends PaymentGatewayStrategy{
 
             String paymentLink = paymentLinkObj.get("short_url");
             if(paymentLink==null || paymentLink.isBlank()){
-                throw new RuntimeException("Failed to get payment gateway link.");
+                throw new RuntimeException("Failed to generate payment gateway link.");
             }
 
             /*
@@ -88,8 +88,8 @@ public class RazorpayPaymentGatewayStrategy extends PaymentGatewayStrategy{
 
             return  paymentLink;
         }
-        catch (RazorpayException e){
-            throw new RuntimeException(e);
+        catch (RazorpayException ex){
+            throw new RuntimeException(ex);
         }
     }
 
