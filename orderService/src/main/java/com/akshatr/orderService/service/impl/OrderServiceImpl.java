@@ -3,8 +3,10 @@ package com.akshatr.orderService.service.impl;
 import com.akshatr.orderService.exceptions.BadRequestException;
 import com.akshatr.orderService.model.dto.order.OrderRequestDto;
 import com.akshatr.orderService.model.dto.order.OrderSearchDto;
+import com.akshatr.orderService.model.dto.payment.PaymentEvent;
 import com.akshatr.orderService.model.entity.Order;
 import com.akshatr.orderService.model.enums.OrderStatus;
+import com.akshatr.orderService.model.enums.PaymentStatus;
 import com.akshatr.orderService.repository.OrderRepository;
 import com.akshatr.orderService.service.OrderService;
 import lombok.RequiredArgsConstructor;
@@ -55,5 +57,28 @@ public class OrderServiceImpl implements OrderService {
     @Override
     public List<Order> search(OrderSearchDto request) {
         return orderRepository.search(request.getUserId());
+    }
+
+    @Override
+    public void updatePaymentStatus(PaymentEvent event){
+        Optional<Order> existingOrder = orderRepository.findById(event.getOrderId());
+        if(existingOrder.isEmpty()){
+            throw new BadRequestException("Order not found.");
+        }
+
+        Order order = existingOrder.get();
+        if(event.getStatus() == PaymentStatus.SUCCESS){
+            double currentPaid = order.getPaid() + event.getAmount();
+
+            order.setPaid(currentPaid);
+            if(currentPaid < order.getCost()){
+                order.setStatus(OrderStatus.PARTIALLY_PAID);
+            }
+            else if(order.getCost().equals(currentPaid)){
+                order.setStatus(OrderStatus.PAID);
+            }
+        }
+
+        orderRepository.save(order);
     }
 }
