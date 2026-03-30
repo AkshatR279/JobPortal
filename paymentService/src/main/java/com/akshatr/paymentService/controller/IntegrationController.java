@@ -31,12 +31,13 @@ public class IntegrationController {
                     )
                     .build();
 
+            integrationService.confirmPaymentStatus(webhookRequest);
+
             return ResponseEntity.ok(
                     GeneralAPIResponse.builder()
                             .success(true)
                             .message("Success")
                             .status(HttpStatus.OK.value())
-                            .data(integrationService.confirmPaymentStatus(webhookRequest))
                             .build()
             );
         } catch (RuntimeException ex) {

@@ -14,6 +14,7 @@ import com.razorpay.RazorpayException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -47,5 +48,20 @@ public class PaymentServiceImpl implements PaymentService {
         return PaymentLinkDto.builder()
                 .paymentGatewayLink(paymentLink)
                 .build();
+    }
+
+    @Override
+    public Payment getPaymentByNo(String paymentNo){
+        Optional<Payment> payment = paymentRepository.findByName(paymentNo);
+        if(payment.isEmpty()){
+            throw new BadRequestException("Payment not found.");
+        }
+
+        return payment.get();
+    }
+
+    @Override
+    public Payment save(Payment payment){
+        return paymentRepository.save(payment);
     }
 }

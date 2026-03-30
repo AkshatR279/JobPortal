@@ -3,11 +3,13 @@ package com.akshatr.paymentService.service.impl;
 import com.akshatr.paymentService.exceptions.BadRequestException;
 import com.akshatr.paymentService.model.dto.integration.PaymentGatewayStatus;
 import com.akshatr.paymentService.model.dto.integration.PaymentGatewayWebhook;
+import com.akshatr.paymentService.model.entity.Payment;
 import com.akshatr.paymentService.model.enums.PaymentGateway;
 import com.akshatr.paymentService.model.enums.PaymentStatus;
 import com.akshatr.paymentService.paymentgateway.factory.PaymentGatewayStrategyFactory;
 import com.akshatr.paymentService.paymentgateway.strategy.PaymentGatewayStrategy;
 import com.akshatr.paymentService.service.IntegrationService;
+import com.akshatr.paymentService.service.PaymentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -17,6 +19,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class IntegrationServiceImpl implements IntegrationService {
     private final PaymentGatewayStrategyFactory paymentGatewayStrategyFactory;
+    private final PaymentService paymentService;
 
     @Override
     public void confirmPaymentStatus(PaymentGatewayWebhook webhookRequest) {
@@ -27,5 +30,9 @@ public class IntegrationServiceImpl implements IntegrationService {
         }
 
         PaymentGatewayStatus paymentGatewayStatus = paymentGatewayStrategy.processWebhook(webhookRequest);
+
+        Payment payment = paymentService.getPaymentByNo(paymentGatewayStatus.getPaymentNo());
+        payment.setStatus(paymentGatewayStatus.getStatus());
+        paymentService.save(payment);
     }
 }

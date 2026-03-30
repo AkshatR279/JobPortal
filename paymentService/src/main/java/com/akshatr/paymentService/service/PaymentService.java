@@ -12,4 +12,6 @@ public interface PaymentService {
     public Payment getPayment(Long id);
     public List<Payment> listAllPayments();
     public List<Payment> searchPayments(PaymentSearchDto request);
+    public Payment getPaymentByNo(String paymentNo);
+    public Payment save(Payment payment);
 }
