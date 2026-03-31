@@ -2,11 +2,7 @@ package com.akshatr.jobportal.controller;
 
 import com.akshatr.jobportal.model.dto.GeneralAPIResponse;
 import com.akshatr.jobportal.model.dto.payment.PaymentRequestDto;
-import com.akshatr.jobportal.model.dto.payment.PaymentResponseDto;
-import com.akshatr.jobportal.model.dto.payment.PaymentSearchDto;
-import com.akshatr.jobportal.model.entity.Payment;
 import com.akshatr.jobportal.service.PaymentService;
-import com.akshatr.jobportal.util.DtoConvertor;
 import com.akshatr.jobportal.util.ExceptionHandler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

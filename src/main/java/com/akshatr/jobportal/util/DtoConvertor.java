@@ -40,10 +40,10 @@ public class DtoConvertor {
                 .build();
     }
 
-    public OrderResponseShortDto convertOrderToResponseShort(Order order){
-        return OrderResponseShortDto.builder()
-                .id(order.getId())
-                .name(order.getName())
-                .build();
-    }
+//    public OrderResponseShortDto convertOrderToResponseShort(Order order){
+//        return OrderResponseShortDto.builder()
+//                .id(order.getId())
+//                .name(order.getName())
+//                .build();
+//    }
 }
