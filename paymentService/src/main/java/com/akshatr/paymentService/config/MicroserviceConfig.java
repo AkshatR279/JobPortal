@@ -1,4 +1,4 @@
-package com.akshatr.jobportal.config;
+package com.akshatr.paymentService.config;
 
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.context.annotation.Bean;

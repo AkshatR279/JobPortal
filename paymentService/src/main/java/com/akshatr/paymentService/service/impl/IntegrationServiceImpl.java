@@ -36,7 +36,7 @@ public class IntegrationServiceImpl implements IntegrationService {
 
         Payment payment = paymentService.getPaymentByNo(paymentGatewayStatus.getPaymentNo());
         payment.setStatus(paymentGatewayStatus.getStatus());
-        paymentService.save(payment);
+        payment = paymentService.save(payment);
 
         PaymentEvent event = PaymentEvent.builder()
                 .id(payment.getId())

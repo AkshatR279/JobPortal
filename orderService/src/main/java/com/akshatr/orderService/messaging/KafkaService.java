@@ -4,6 +4,7 @@ import com.akshatr.orderService.model.dto.payment.PaymentEvent;
 import com.akshatr.orderService.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.kafka.annotation.KafkaListener;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 @Service

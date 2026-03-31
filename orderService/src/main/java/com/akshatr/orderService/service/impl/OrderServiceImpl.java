@@ -7,9 +7,12 @@ import com.akshatr.orderService.model.dto.payment.PaymentEvent;
 import com.akshatr.orderService.model.entity.Order;
 import com.akshatr.orderService.model.enums.OrderStatus;
 import com.akshatr.orderService.model.enums.PaymentStatus;
+import com.akshatr.orderService.model.utilmodel.Email;
 import com.akshatr.orderService.repository.OrderRepository;
 import com.akshatr.orderService.service.OrderService;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.protocol.types.Field;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -19,6 +22,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
+    private final KafkaTemplate<String, Object> kafka;
 
     @Override
     public Order createOrder(OrderRequestDto request) {
@@ -80,5 +84,22 @@ public class OrderServiceImpl implements OrderService {
         }
 
         orderRepository.save(order);
+
+        if(order.getStatus() == OrderStatus.PAID)
+            sentConfirmationEmail(order);
+    }
+
+    private void sentConfirmationEmail(Order order){
+        Email email = Email.builder()
+                .to("akshatr279.b@gmail.com")
+                .subject("Order Confirmation - " + order.getName())
+                .content("Order confirmed [ " + order.getName() + " ]"
+                        + "\nProduct: " + order.getOrderType()
+                        + "\nInvoice Date: " + order.getOrderDate()
+                        + "\nCost: " + order.getCost()
+                        + "\nTax Amt.:" + order.getTax())
+                .build();
+
+        kafka.send("SEND_EMAIL", email);
     }
 }
