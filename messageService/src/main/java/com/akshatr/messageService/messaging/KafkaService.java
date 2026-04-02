@@ -17,8 +17,8 @@ public class KafkaService {
         try {
             emailService.sendEmail(email);
         }
-        catch (MessagingException ignored){
-
+        catch (MessagingException ex){
+            System.out.println(ex.getMessage());
         }
     }
 }

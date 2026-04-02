@@ -1,4 +1,4 @@
-package com.akshatr.orderService.config;
+package com.akshatr.messageService.config;
 
 import org.apache.kafka.clients.consumer.ConsumerConfig;
 import org.apache.kafka.clients.producer.ProducerConfig;
@@ -13,6 +13,8 @@ import org.springframework.kafka.core.*;
 import org.springframework.kafka.support.serializer.ErrorHandlingDeserializer;
 import org.springframework.kafka.support.serializer.JsonDeserializer;
 import org.springframework.kafka.support.serializer.JsonSerializer;
+
+import java.util.Map;
 
 @Configuration
 @EnableKafka
@@ -53,7 +55,7 @@ public class KafkaConfig {
         config.put(JsonDeserializer.USE_TYPE_INFO_HEADERS, true);
 
         config.put(JsonDeserializer.TYPE_MAPPINGS,
-                "com.akshatr.paymentService.model.dto.payment.PaymentEvent:com.akshatr.orderService.model.dto.payment.PaymentEvent"
+                "com.akshatr.jobportal.model.utilmodel.Email:com.akshatr.messageService.model.utilmodel.Email"
         );
 
         return new DefaultKafkaConsumerFactory<>(config);
