@@ -3,6 +3,7 @@ package com.akshatr.jobportal.service.impl;
 import com.akshatr.jobportal.model.utilmodel.Email;
 import com.akshatr.jobportal.service.EmailService;
 import lombok.RequiredArgsConstructor;
+import org.apache.kafka.common.internals.Topic;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
