@@ -13,6 +13,7 @@ import java.util.List;
 @Getter
 @Setter
 public class Company extends BaseEntity{
+    private String image;
 
     @OneToMany(mappedBy = "company")
     private List<Job> jobs;

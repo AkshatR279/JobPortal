@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 
@@ -71,14 +72,14 @@ public class CompanyController {
     }
 
     @PostMapping("/save")
-    public ResponseEntity<GeneralAPIResponse> saveCompany(@RequestBody CompanyRequestDto request){
+    public ResponseEntity<GeneralAPIResponse> saveCompany(@RequestPart CompanyRequestDto request, @RequestPart(required = false) MultipartFile image){
         try {
             return ResponseEntity.ok(
                     GeneralAPIResponse.builder()
                             .success(true)
                             .message("Success")
                             .status(HttpStatus.OK.value())
-                            .data(generateCompanyResponse(companyService.saveCompany(request)))
+                            .data(generateCompanyResponse(companyService.saveCompany(request, image)))
                             .build()
             );
         } catch (RuntimeException ex) {
